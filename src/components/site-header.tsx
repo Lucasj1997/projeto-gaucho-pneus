@@ -13,8 +13,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const links = [
-  { href: "#campanhas", label: "Campanhas" },
-  { href: "#servicos", label: "Serviços" },
+  { href: "#galeria", label: "Fotos" },
   { href: "#produtos", label: "Produtos" },
   { href: "#sobre", label: "Sobre" },
   { href: "#contato", label: "Contato" },
@@ -23,18 +22,18 @@ const links = [
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/90 backdrop-blur-md">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6 sm:py-3.5">
         <Link
           href="/"
           className="flex shrink-0 items-center rounded-full outline-none focus-visible:ring-2 focus-visible:ring-zinc-950 focus-visible:ring-offset-2"
           aria-label={`${company.name} — início`}
         >
-          <span className="flex h-12 w-12 shrink-0 overflow-hidden rounded-full bg-black shadow-sm ring-1 ring-zinc-200/90 sm:h-14 sm:w-14">
+          <span className="flex h-16 w-16 shrink-0 overflow-hidden rounded-full bg-black shadow-sm ring-1 ring-zinc-200/90 sm:h-20 sm:w-20 md:h-[5.25rem] md:w-[5.25rem]">
             <Image
               src="/logo-gaucho-pneus.png"
               alt="Gaúcho Pneus e Rodas Agrícolas — logotipo com ícone de pneu agrícola"
-              width={112}
-              height={112}
+              width={168}
+              height={168}
               priority
               className="h-full w-full object-contain"
             />

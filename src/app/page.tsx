@@ -1,9 +1,12 @@
 import { ContactForm } from "@/components/contact-form";
 import { CampaignGallery } from "@/components/campaign-gallery";
+import { HeroVideoBackground } from "@/components/hero-video-background";
 import { buttonVariants } from "@/components/ui/button-variants";
 import {
   Card,
+  CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -15,33 +18,28 @@ import {
   company,
   highlights,
   products,
-  services,
 } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
 import { Check } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 
 export default function HomePage() {
   return (
     <>
       <section
-        className="relative min-h-[min(92vh,880px)] border-b border-zinc-200 text-white"
+        className="relative min-h-[min(92vh,880px)] overflow-hidden border-b border-zinc-200 text-white"
         aria-label="Destaque principal"
       >
-        <Image
-          src={campaignHero.src}
-          alt={campaignHero.alt}
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-[center_35%] sm:object-[center_30%] md:object-[52%_center]"
+        <HeroVideoBackground
+          posterSrc={campaignHero.src}
+          objectPositionClass="object-[center_78%] sm:object-[center_72%] md:object-[center_70%]"
         />
         <div
-          className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/25 md:bg-gradient-to-r md:from-black/80 md:via-black/45 md:to-black/15"
+          className="absolute inset-0 z-[1] bg-gradient-to-t from-black/85 via-black/45 to-black/25 md:bg-gradient-to-r md:from-black/80 md:via-black/45 md:to-black/15"
           aria-hidden
         />
         <div className="relative z-10 mx-auto flex min-h-[min(92vh,880px)] max-w-6xl flex-col justify-end px-4 pb-12 pt-28 sm:px-6 md:justify-center md:pb-20 md:pt-24">
+          <p className="sr-only">{campaignHero.alt}</p>
           <div className="max-w-xl space-y-4 md:max-w-lg">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/75">
               {company.tagline}
@@ -74,64 +72,32 @@ export default function HomePage() {
               >
                 Falar no WhatsApp
               </Link>
-              <Link
-                href="#campanhas"
-                className={cn(
-                  buttonVariants({ size: "lg", variant: "ghost" }),
-                  "rounded-full text-white hover:bg-white/10",
-                )}
-              >
-                Ver campanhas
-              </Link>
             </div>
             <p className="pt-2 text-xs text-white/65 md:max-w-md">
-              As peças acima trazem textos e logos já incorporados à arte — na
-              galeria abaixo você vê a linha completa de materiais promocionais.
+              As imagens na galeria trazem textos e logos já incorporados à arte.
             </p>
           </div>
         </div>
       </section>
 
       <section
-        id="campanhas"
+        id="galeria"
         className="scroll-mt-24 border-b border-zinc-200 bg-zinc-50 py-16"
       >
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="max-w-3xl">
             <h2 className="text-3xl font-bold tracking-tight text-zinc-950">
-              Campanhas no campo
+              Fotos
             </h2>
             <p className="mt-2 text-zinc-600">
-              Artes em formato vertical, prontas para destaque no site e nas
-              redes. Em telas largas, o recorte mantém foco nas máquinas e nas
-              mensagens já incluídas em cada imagem.
+              Imagens em formato vertical com máquinas, pneus e rodados no
+              campo. Em telas largas, o recorte mantém o foco no equipamento e
+              nas mensagens já incluídas em cada imagem.
             </p>
           </div>
           <div className="mt-10">
             <CampaignGallery items={campaignGallery} />
           </div>
-        </div>
-      </section>
-
-      <section id="servicos" className="mx-auto max-w-6xl px-4 py-16 sm:px-6 scroll-mt-24">
-        <div className="max-w-2xl">
-          <h2 className="text-3xl font-bold tracking-tight">Serviços</h2>
-          <p className="mt-2 text-zinc-600">
-            Do diagnóstico à montagem: suporte para escolher pneus e rodas com
-            melhor custo-benefício.
-          </p>
-        </div>
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
-          {services.map((s) => (
-            <Card key={s.title} className="border-zinc-200 shadow-sm">
-              <CardHeader>
-                <CardTitle className="text-lg">{s.title}</CardTitle>
-                <CardDescription className="text-base text-zinc-600">
-                  {s.body}
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          ))}
         </div>
       </section>
 
@@ -144,18 +110,19 @@ export default function HomePage() {
             <div className="max-w-2xl">
               <h2 className="text-3xl font-bold tracking-tight">Produtos</h2>
               <p className="mt-2 text-zinc-600">
-                Exemplos de linha (dados mockados). Ajuste referências e preços
-                conforme seu estoque.
+                Referências de medidas e marcas mais comuns no agronegócio. A
+                disponibilidade real depende do estoque do dia — confirme com a
+                equipe antes de deslocar.
               </p>
             </div>
             <Link
               href="#contato"
               className={cn(buttonVariants({ variant: "outline" }), "rounded-full")}
             >
-              Pedir disponibilidade
+              Consulte estoque
             </Link>
           </div>
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
+          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {products.map((p) => (
               <Card key={p.id} className="border-zinc-200 shadow-sm">
                 <CardHeader>
@@ -167,6 +134,19 @@ export default function HomePage() {
                     {p.description}
                   </CardDescription>
                 </CardHeader>
+                <CardContent className="space-y-3 text-sm text-zinc-700">
+                  <div>
+                    <p className="font-semibold text-zinc-900">Medidas (referência)</p>
+                    <p className="mt-0.5 leading-snug">{p.medidasReferencia}</p>
+                  </div>
+                  <div>
+                    <p className="font-semibold text-zinc-900">Marcas / linhas</p>
+                    <p className="mt-0.5 leading-snug">{p.marcas}</p>
+                  </div>
+                </CardContent>
+                <CardFooter className="text-sm font-semibold text-zinc-900">
+                  {p.disponibilidade}
+                </CardFooter>
               </Card>
             ))}
           </div>
@@ -215,7 +195,21 @@ export default function HomePage() {
               Envie sua necessidade (medida, máquina, quantidade). Validamos os
               dados no servidor e respondemos pelo canal preferido.
             </p>
-            <ul className="mt-6 space-y-2 text-sm text-zinc-700">
+            <ul className="mt-6 space-y-3 text-sm text-zinc-700">
+              <li className="leading-snug">
+                <span className="font-medium">Localização: </span>
+                <span className="block sm:inline">{company.address}</span>
+                <span className="mt-1 block">
+                  <Link
+                    className="font-medium text-zinc-900 underline underline-offset-2"
+                    href={company.mapsUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Abrir no Google Maps
+                  </Link>
+                </span>
+              </li>
               <li>
                 <span className="font-medium">E-mail: </span>
                 <Link className="underline underline-offset-2" href={`mailto:${company.email}`}>

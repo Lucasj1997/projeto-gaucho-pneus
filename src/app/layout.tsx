@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     template: "%s | Gaúcho Pneus",
   },
   description:
-    "Pneus e rodas para trator, colheitadeira e implementos. Atendimento a produtores e revendas no Rio Grande do Sul.",
+    "Pneus e rodas para trator, colheitadeira e implementos. Vila Lângaro — RS (RS-463, CEP 99955-000). Atendimento a produtores e revendas.",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000",
   ),

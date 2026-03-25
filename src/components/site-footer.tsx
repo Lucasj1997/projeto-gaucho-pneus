@@ -12,7 +12,15 @@ export function SiteFooter() {
           <p className="mt-2 text-sm text-zinc-400">{company.hours}</p>
         </div>
         <div className="flex flex-col gap-2 text-sm">
-          <span>{company.address}</span>
+          <span className="max-w-sm leading-snug">{company.address}</span>
+          <Link
+            className="w-fit text-white underline-offset-4 hover:underline"
+            href={company.mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Como chegar no mapa
+          </Link>
           <Link
             className="text-white underline-offset-4 hover:underline"
             href={`mailto:${company.email}`}
