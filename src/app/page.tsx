@@ -1,4 +1,5 @@
 import { ContactForm } from "@/components/contact-form";
+import { CampaignGallery } from "@/components/campaign-gallery";
 import { buttonVariants } from "@/components/ui/button-variants";
 import {
   Card,
@@ -7,40 +8,52 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import {
+  campaignGallery,
+  campaignHero,
+} from "@/lib/mock-data/campanhas";
+import {
   company,
   highlights,
   products,
   services,
 } from "@/lib/mock-data";
 import { cn } from "@/lib/utils";
-import { Check, Leaf, ShieldCheck, Tractor } from "lucide-react";
+import { Check } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export default function HomePage() {
   return (
     <>
-      <section className="relative overflow-hidden border-b border-zinc-200 bg-zinc-900 text-white">
+      <section
+        className="relative min-h-[min(92vh,880px)] border-b border-zinc-200 text-white"
+        aria-label="Destaque principal"
+      >
+        <Image
+          src={campaignHero.src}
+          alt={campaignHero.alt}
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[center_35%] sm:object-[center_30%] md:object-[52%_center]"
+        />
         <div
-          className="absolute inset-0 opacity-40"
-          style={{
-            backgroundImage:
-              "linear-gradient(to bottom, rgba(0,0,0,0.5), rgba(0,0,0,0.75)), url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cpath fill='%23272727' fill-opacity='0.45' d='M0 0h40v40H0V0zm40 40h40v40H40V40z'/%3E%3C/svg%3E\")",
-          }}
+          className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/25 md:bg-gradient-to-r md:from-black/80 md:via-black/45 md:to-black/15"
           aria-hidden
         />
-        <div className="relative mx-auto flex max-w-6xl flex-col gap-8 px-4 py-16 sm:px-6 sm:py-24 lg:flex-row lg:items-center lg:justify-between">
-          <div className="max-w-xl space-y-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
+        <div className="relative z-10 mx-auto flex min-h-[min(92vh,880px)] max-w-6xl flex-col justify-end px-4 pb-12 pt-28 sm:px-6 md:justify-center md:pb-20 md:pt-24">
+          <div className="max-w-xl space-y-4 md:max-w-lg">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/75">
               {company.tagline}
             </p>
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+            <h1 className="text-4xl font-bold tracking-tight text-balance sm:text-5xl">
               Tração e durabilidade para o seu negócio no campo
             </h1>
-            <p className="text-lg text-white/85">
-              Consultoria técnica, linhas para máquinas agrícolas e rodas para
-              implementos — com foco em performance e segurança na operação.
+            <p className="text-lg text-white/90">
+              Pneus, rodas e duplagem para máquinas agrícolas — com orientação
+              técnica e foco em rendimento operacional.
             </p>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-3 pt-1">
               <Link
                 href="#contato"
                 className={cn(
@@ -56,46 +69,51 @@ export default function HomePage() {
                 rel="noopener noreferrer"
                 className={cn(
                   buttonVariants({ size: "lg", variant: "outline" }),
-                  "rounded-full border-white/40 bg-transparent text-white hover:bg-white/10",
+                  "rounded-full border-white/45 bg-black/20 text-white backdrop-blur-sm hover:bg-white/15",
                 )}
               >
                 Falar no WhatsApp
               </Link>
+              <Link
+                href="#campanhas"
+                className={cn(
+                  buttonVariants({ size: "lg", variant: "ghost" }),
+                  "rounded-full text-white hover:bg-white/10",
+                )}
+              >
+                Ver campanhas
+              </Link>
             </div>
-          </div>
-          <div className="grid max-w-sm gap-4 rounded-2xl border border-white/15 bg-black/40 p-6 backdrop-blur">
-            <div className="flex items-center gap-3">
-              <Tractor className="size-8 shrink-0" aria-hidden />
-              <div>
-                <p className="font-semibold">Máquinas agrícolas</p>
-                <p className="text-sm text-white/75">
-                  Medidas e aplicações sob demanda.
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <Leaf className="size-8 shrink-0" aria-hidden />
-              <div>
-                <p className="font-semibold">Menos parada</p>
-                <p className="text-sm text-white/75">
-                  Indicação alinhada ao tipo de solo e ritmo de safra.
-                </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <ShieldCheck className="size-8 shrink-0" aria-hidden />
-              <div>
-                <p className="font-semibold">Confiança</p>
-                <p className="text-sm text-white/75">
-                  Especificações técnicas e suporte próximo ao produtor.
-                </p>
-              </div>
-            </div>
+            <p className="pt-2 text-xs text-white/65 md:max-w-md">
+              As peças acima trazem textos e logos já incorporados à arte — na
+              galeria abaixo você vê a linha completa de materiais promocionais.
+            </p>
           </div>
         </div>
       </section>
 
-      <section id="servicos" className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <section
+        id="campanhas"
+        className="scroll-mt-24 border-b border-zinc-200 bg-zinc-50 py-16"
+      >
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="max-w-3xl">
+            <h2 className="text-3xl font-bold tracking-tight text-zinc-950">
+              Campanhas no campo
+            </h2>
+            <p className="mt-2 text-zinc-600">
+              Artes em formato vertical, prontas para destaque no site e nas
+              redes. Em telas largas, o recorte mantém foco nas máquinas e nas
+              mensagens já incluídas em cada imagem.
+            </p>
+          </div>
+          <div className="mt-10">
+            <CampaignGallery items={campaignGallery} />
+          </div>
+        </div>
+      </section>
+
+      <section id="servicos" className="mx-auto max-w-6xl px-4 py-16 sm:px-6 scroll-mt-24">
         <div className="max-w-2xl">
           <h2 className="text-3xl font-bold tracking-tight">Serviços</h2>
           <p className="mt-2 text-zinc-600">
@@ -119,7 +137,7 @@ export default function HomePage() {
 
       <section
         id="produtos"
-        className="border-y border-zinc-200 bg-white py-16"
+        className="border-y border-zinc-200 bg-white py-16 scroll-mt-24"
       >
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
@@ -155,7 +173,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="sobre" className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+      <section id="sobre" className="mx-auto max-w-6xl px-4 py-16 sm:px-6 scroll-mt-24">
         <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
           <div>
             <h2 className="text-3xl font-bold tracking-tight">Sobre a Gaúcho Pneus</h2>
@@ -189,7 +207,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="contato" className="border-t border-zinc-200 bg-white py-16">
+      <section id="contato" className="border-t border-zinc-200 bg-white py-16 scroll-mt-24">
         <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-2">
           <div>
             <h2 className="text-3xl font-bold tracking-tight">Contato</h2>

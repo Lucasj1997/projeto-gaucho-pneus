@@ -13,6 +13,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const links = [
+  { href: "#campanhas", label: "Campanhas" },
   { href: "#servicos", label: "Serviços" },
   { href: "#produtos", label: "Produtos" },
   { href: "#sobre", label: "Sobre" },
