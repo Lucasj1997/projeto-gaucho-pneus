@@ -1,5 +1,7 @@
+import { MobileContactBar } from "@/components/mobile-contact-bar";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { WhatsappFloat } from "@/components/whatsapp-float";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -36,10 +38,12 @@ export default function RootLayout({
       lang="pt-BR"
       className={`${geistSans.variable} ${geistMono.variable} h-full scroll-smooth antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-zinc-50 text-zinc-950">
+      <body className="min-h-full flex flex-col bg-zinc-100 pb-20 text-zinc-950 md:pb-0">
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />
+        <WhatsappFloat />
+        <MobileContactBar />
       </body>
     </html>
   );

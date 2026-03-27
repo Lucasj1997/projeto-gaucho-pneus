@@ -7,11 +7,14 @@ type Props = {
   posterSrc: string;
   /** favorece a parte inferior do quadro (rodas / solo) */
   objectPositionClass?: string;
+  /** zoom opcional para aproximar o enquadramento do hero. */
+  zoomClass?: string;
 };
 
 export function HeroVideoBackground({
   posterSrc,
   objectPositionClass = "object-[center_72%] sm:object-[center_68%]",
+  zoomClass = "",
 }: Props) {
   const ref = useRef<HTMLVideoElement>(null);
 
@@ -42,7 +45,7 @@ export function HeroVideoBackground({
     <video
       ref={ref}
       aria-hidden
-      className={`absolute inset-0 z-0 h-full w-full ${objectPositionClass} object-cover`}
+      className={`absolute inset-0 z-0 h-full w-full ${objectPositionClass} ${zoomClass} object-cover`}
       autoPlay
       muted
       playsInline

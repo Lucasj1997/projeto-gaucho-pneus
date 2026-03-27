@@ -1,8 +1,17 @@
+/** Consulta única para link e iframe do Google Maps (evita divergência). */
+const MAPS_SEARCH_QUERY =
+  "RS-463, Vila Lângaro, RS, 99955-000, Brasil" as const;
+
 export type Product = {
   id: string;
   title: string;
   description: string;
   tag: string;
+  /** Imagem ilustrativa do conjunto/pneu para a categoria. */
+  imageSrc: string;
+  imageAlt: string;
+  /** Medidas em destaque para leitura rápida em chips. */
+  medidasExemplo: readonly string[];
   /** Medidas comuns indicadas para consulta (não implica item em pronta entrega). */
   medidasReferencia: string;
   /** Linhas e marcas trabalhadas ou equivalentes — confirmar disponibilidade no balcão. */
@@ -14,15 +23,38 @@ export type Product = {
 export const company = {
   name: "Gaúcho Pneus",
   tagline: "Pneus e rodas agrícolas",
-  phoneDisplay: "(XX) XXXX-XXXX",
-  whatsappHref: "https://wa.me/5551999999999",
+  phoneDisplay: "(54) 98400-9415",
+  phoneHref: "tel:+5554984009415",
+  /** DDD 54 — número informado pelo cliente (formato internacional para wa.me). */
+  whatsappHref: "https://wa.me/5554984009415",
+  contacts: [
+    {
+      name: "Marciano",
+      phoneDisplay: "(54) 99955-4898",
+      whatsappHref: "https://wa.me/5554999554898",
+    },
+    {
+      name: "Edson",
+      phoneDisplay: "(54) 98400-9415",
+      whatsappHref: "https://wa.me/5554984009415",
+    },
+  ] as const,
+  socialLinks: {
+    facebook: "https://www.facebook.com/share/14c3P2LE2Tu/?mibextid=wwXIfr",
+    instagram: "https://www.instagram.com/gaucho.pneus?igsh=MXcyb21keDhmb24wNQ==",
+  } as const,
   email: "contato@gauchopneus.com.br",
   /** Endereço para exibição */
   address: "RS-463, Vila Lângaro — RS · CEP 99955-000",
-  /** Link “Como chegar” no Google Maps */
+  /** Link “Como chegar” no Google Maps (nova aba). */
   mapsUrl:
     "https://www.google.com/maps/search/?api=1&query=" +
-    encodeURIComponent("RS-463, Vila Lângaro, RS, 99955-000, Brasil"),
+    encodeURIComponent(MAPS_SEARCH_QUERY),
+  /** iframe embed — mesmo local do `mapsUrl` (sem chave de API). */
+  mapsEmbedSrc:
+    "https://maps.google.com/maps?q=" +
+    encodeURIComponent(MAPS_SEARCH_QUERY) +
+    "&output=embed&hl=pt-BR&z=16",
   hours: "Balcão: segunda a sexta, 08h–18h",
 };
 
@@ -48,6 +80,9 @@ export const products: Product[] = [
     description:
       "Linha para eixo traseiro e tração em operações de médio e alto porte. Indicação conforme máquina, lastro e tipo de solo.",
     tag: "Trator · tração",
+    imageSrc: "/images/campanhas/campanha-07.png",
+    imageAlt: "Pneu agrícola de tração em operação no campo.",
+    medidasExemplo: ["420/85R30", "460/85R38", "620/70R42"],
     medidasReferencia:
       "Ex.: 420/85R30, 460/85R38, 520/85R38, 620/70R42 — outras sob consulta.",
     marcas:
@@ -60,6 +95,9 @@ export const products: Product[] = [
     description:
       "Para reduzir compactação em preparo, plantio e transporte em terreno sensível ou com necessidade de maior área de contato.",
     tag: "Flotação · diagonal",
+    imageSrc: "/images/campanhas/campanha-03.png",
+    imageAlt: "Pneu de flotação para menor compactação do solo.",
+    medidasExemplo: ["23.1-26", "24.5-32", "30.5L-32"],
     medidasReferencia:
       "Ex.: 23.1-26, 24.5-32, 30.5L-32 — demais medidas mediante consulta.",
     marcas:
@@ -72,6 +110,9 @@ export const products: Product[] = [
     description:
       "Conjuntos para direção e estabilidade em velocidade de transporte e manobras no campo.",
     tag: "Trator · direção",
+    imageSrc: "/images/campanhas/campanha-06.png",
+    imageAlt: "Trator com pneus de direção dianteira em campo.",
+    medidasExemplo: ["320/85R24", "380/85R28", "420/85R28"],
     medidasReferencia:
       "Ex.: 320/85R24, 380/85R28, 420/85R28 — compatibilidade conforme bitola e frente.",
     marcas:
@@ -84,6 +125,9 @@ export const products: Product[] = [
     description:
       "Aplicações em máquinas de colheita com foco em suporte de carga, tração em terreiro e resposta em fileira.",
     tag: "Colheitadeira",
+    imageSrc: "/images/campanhas/campanha-15.png",
+    imageAlt: "Colheitadeira com pneus agrícolas de alta capacidade de carga.",
+    medidasExemplo: ["620/75R30", "800/70R38", "900/60R42"],
     medidasReferencia:
       "Ex.: 620/75R30, 800/70R38, 900/60R42 — varia conforme modelo (John Deere, CNH, AGCO, etc.).",
     marcas:
@@ -96,6 +140,9 @@ export const products: Product[] = [
     description:
       "Montagens para plantadeiras, pulverizadores, grades e carretas, com estudo de bitola e offset.",
     tag: "Rodado · implemento",
+    imageSrc: "/images/campanhas/campanha-01.png",
+    imageAlt: "Conjunto de rodas e aros para implementos agrícolas.",
+    medidasExemplo: ["W15 x 38", "W18 x 38", "DW27 x 32"],
     medidasReferencia:
       "Aros e cilindros conforme projeto: ex. W15 x 38, W18 x 38, DW27 x 32 — sempre validar com a máquina.",
     marcas:
@@ -108,6 +155,9 @@ export const products: Product[] = [
     description:
       "Duplagem traseira e dianteira para distribuição de peso e maior área de contato, com montagem orientada pela equipe.",
     tag: "Duplagem",
+    imageSrc: "/images/campanhas/campanha-05.png",
+    imageAlt: "Conjunto de duplagem com pneus agrícolas para maior área de contato.",
+    medidasExemplo: ["18.4-38", "520/85R38", "620/70R42"],
     medidasReferencia:
       "Compatível com medidas de pneu e eixo informadas (ex. 18.4-38, 620/70R42). Projeto sob medida.",
     marcas:

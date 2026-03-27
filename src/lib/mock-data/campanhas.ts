@@ -11,8 +11,8 @@ export type CampaignItem = {
 const base = "/images/campanhas";
 
 export const campaignHero: CampaignItem = {
-  src: `${base}/campanha-01.png`,
-  alt: "Arte Gaúcho Pneus: trator Massey Ferguson em barracão metálico, destaque para pneu agrícola e mensagem sobre tração e rendimento operacional.",
+  src: `${base}/campanha-15.png`,
+  alt: "Colheitadeira John Deere em campo com foco em operação agrícola e conjunto de pneus.",
   tag: "Destaque",
 };
 
@@ -92,5 +92,10 @@ export const campaignGallery: CampaignItem[] = [
     src: `${base}/campanha-16.png`,
     alt: "Close de pneu Pirelli e conjunto de duplagem em ambiente de fazenda ao entardecer.",
     tag: "Detalhe técnico",
+  },
+  {
+    src: `${base}/campanha-17.png`,
+    alt: "Conjunto de máquinas no campo ao entardecer com mensagem institucional da Gaúcho Pneus.",
+    tag: "Institucional",
   },
 ];

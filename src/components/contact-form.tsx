@@ -65,13 +65,18 @@ export function ContactForm() {
   return (
     <form
       onSubmit={form.handleSubmit(onSubmit)}
-      className="grid gap-4 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm"
+      className="grid gap-4 rounded-2xl border border-zinc-200 bg-white p-6 text-zinc-900 shadow-sm"
       noValidate
     >
       <div className="grid gap-2 sm:grid-cols-2 sm:gap-4">
         <div className="space-y-2">
-          <Label htmlFor="name">Nome</Label>
-          <Input id="name" autoComplete="name" {...form.register("name")} />
+          <Label className="text-zinc-700" htmlFor="name">Nome</Label>
+          <Input
+            className="border-zinc-300 bg-white text-zinc-900 placeholder:text-zinc-400"
+            id="name"
+            autoComplete="name"
+            {...form.register("name")}
+          />
           {form.formState.errors.name?.message ? (
             <p className="text-sm text-red-600" role="alert">
               {form.formState.errors.name.message}
@@ -79,8 +84,9 @@ export function ContactForm() {
           ) : null}
         </div>
         <div className="space-y-2">
-          <Label htmlFor="email">E-mail</Label>
+          <Label className="text-zinc-700" htmlFor="email">E-mail</Label>
           <Input
+            className="border-zinc-300 bg-white text-zinc-900 placeholder:text-zinc-400"
             id="email"
             type="email"
             autoComplete="email"
@@ -94,8 +100,13 @@ export function ContactForm() {
         </div>
       </div>
       <div className="space-y-2">
-        <Label htmlFor="phone">Telefone / WhatsApp (opcional)</Label>
-        <Input id="phone" autoComplete="tel" {...form.register("phone")} />
+        <Label className="text-zinc-700" htmlFor="phone">Telefone / WhatsApp (opcional)</Label>
+        <Input
+          className="border-zinc-300 bg-white text-zinc-900 placeholder:text-zinc-400"
+          id="phone"
+          autoComplete="tel"
+          {...form.register("phone")}
+        />
         {form.formState.errors.phone?.message ? (
           <p className="text-sm text-red-600" role="alert">
             {form.formState.errors.phone.message}
@@ -103,8 +114,13 @@ export function ContactForm() {
         ) : null}
       </div>
       <div className="space-y-2">
-        <Label htmlFor="message">Mensagem</Label>
-        <Textarea id="message" rows={5} {...form.register("message")} />
+        <Label className="text-zinc-700" htmlFor="message">Mensagem</Label>
+        <Textarea
+          className="border-zinc-300 bg-white text-zinc-900 placeholder:text-zinc-400"
+          id="message"
+          rows={5}
+          {...form.register("message")}
+        />
         {form.formState.errors.message?.message ? (
           <p className="text-sm text-red-600" role="alert">
             {form.formState.errors.message.message}
