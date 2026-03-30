@@ -9,15 +9,51 @@ export type CampaignItem = {
 };
 
 const base = "/images/campanhas";
+const prancheta = "/images/prancheta";
+
+/** Artes enviadas (Prancheta 1–5) — em destaque na galeria. */
+const pranchetaItems: CampaignItem[] = [
+  {
+    src: `${prancheta}/prancheta-1.png`,
+    alt: "Duplagem em máquina New Holland ao pôr do sol; referência de montagem e região Entre Rios do Sul — Gaúcho Pneus.",
+    tag: "Duplagem",
+  },
+  {
+    src: `${prancheta}/prancheta-2.png`,
+    alt: "Colheitadeira com rodado duplo; arte DUPLAGEM ENTREGUE com bandeira brasileira ao entardecer — Gaúcho Pneus.",
+    tag: "Entrega",
+  },
+  {
+    src: `${prancheta}/prancheta-3.png`,
+    alt: "Colheitadeira amarela ao pôr do sol com bandeira brasileira; pneus e máquinas agrícolas — Gaúcho Pneus.",
+    tag: "Brasil",
+  },
+  {
+    src: `${prancheta}/prancheta-4.png`,
+    alt: "Colheitadeira New Holland em cascalho ao entardecer; cores quentes do pôr do sol — Gaúcho Pneus.",
+    tag: "Colheita",
+  },
+  {
+    src: `${prancheta}/prancheta-5.png`,
+    alt: "Colheitadeira New Holland TC5090 ao pôr do sol; operações de colheita — Gaúcho Pneus.",
+    tag: "New Holland",
+  },
+];
 
 export const campaignHero: CampaignItem = {
-  src: `${base}/campanha-15.png`,
-  alt: "Colheitadeira John Deere em campo com foco em operação agrícola e conjunto de pneus.",
+  src: "/images/hero-trator-john-deere.png",
+  alt: "Trator John Deere 9R com rodado duplo em estrada de cascalho ao pôr do sol — operação agrícola e tração no campo.",
   tag: "Destaque",
 };
 
-/** Itens 2–16: galeria (a primeira é só o hero para não repetir). */
+/** Galeria de campanhas (hero é imagem própria em /images). */
 export const campaignGallery: CampaignItem[] = [
+  ...pranchetaItems,
+  {
+    src: `${base}/campanha-01.png`,
+    alt: "Trator Massey Ferguson em galpão com iluminação industrial; mensagem sobre escolha de pneus e rendimento operacional — Gaúcho Pneus.",
+    tag: "Tração",
+  },
   {
     src: `${base}/campanha-02.png`,
     alt: "Colheitadeira New Holland ao pôr do sol; texto sobre alinhamento da operação em campo — Gaúcho Pneus.",

@@ -1,11 +1,13 @@
 import { CompanyMap } from "@/components/company-map";
 import { ContactForm } from "@/components/contact-form";
+import { ConversionCtas } from "@/components/conversion-ctas";
 import { CampaignGallery } from "@/components/campaign-gallery";
+import { FaqJsonLd } from "@/components/faq-json-ld";
+import { SiteHeader } from "@/components/site-header";
 import { buttonVariants } from "@/components/ui/button-variants";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -20,119 +22,74 @@ import {
   products,
   services,
 } from "@/lib/mock-data";
+import { resolveFaqAnswerText } from "@/lib/faq-resolve";
+import { faqItems } from "@/lib/mock-data/faq";
+import { whatsappWithPrefill } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
-import { ArrowRight, Check, CircleGauge, ShieldCheck, Wrench } from "lucide-react";
+import { Check, CircleGauge, Factory, ShieldCheck, Wrench } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function HomePage() {
-  const flowSteps = [
-    {
-      step: "01",
-      title: "Recebimento técnico",
-      body: "Coletamos medida, máquina e operação para orientar a melhor configuração.",
-    },
-    {
-      step: "02",
-      title: "Validação da aplicação",
-      body: "Conferimos compatibilidade por eixo, carga e tipo de terreno.",
-    },
-    {
-      step: "03",
-      title: "Proposta e atendimento",
-      body: "Retornamos com disponibilidade, opções e apoio comercial no WhatsApp.",
-    },
-  ] as const;
+  const waPrincipal = whatsappWithPrefill(company.whatsappHref);
 
   return (
     <>
+      <SiteHeader />
       <section
-        className="relative min-h-[min(92vh,880px)] overflow-hidden border-b border-zinc-200 text-white"
+        className="relative flex min-h-[min(92vh,880px)] flex-col overflow-hidden border-b border-zinc-200 text-white"
         aria-label="Destaque principal"
       >
         <Image
-          src="/images/hero-john-deere-fundo.jpg"
+          src={campaignHero.src}
           alt={campaignHero.alt}
           fill
           priority
-          className="absolute inset-0 z-0 h-full w-full object-cover object-[center_56%] md:object-center brightness-[0.72] contrast-110 saturate-[0.92]"
+          className="absolute inset-0 z-0 h-full w-full object-cover object-[50%_58%] sm:object-[50%_52%] md:object-[50%_48%] lg:object-[center_45%] brightness-[0.72] contrast-105 saturate-[0.95]"
           sizes="100vw"
         />
         <div
           className="absolute inset-0 z-[1] bg-gradient-to-t from-black/85 via-black/45 to-black/25 md:bg-gradient-to-r md:from-black/80 md:via-black/45 md:to-black/15"
           aria-hidden
         />
-        <div className="relative z-10 mx-auto grid min-h-[min(92vh,880px)] max-w-6xl gap-8 px-4 pb-12 pt-28 sm:px-6 md:grid-cols-[1fr_auto] md:items-end md:pb-20 md:pt-24 lg:items-center">
+        <div className="relative z-10 mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col justify-end px-4 pb-12 pt-6 sm:px-6 md:pb-20 md:pt-12 lg:justify-center lg:pb-24">
           <p className="sr-only">{campaignHero.alt}</p>
-          <div className="max-w-xl space-y-4 md:max-w-lg">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/75">
-              {company.tagline}
-            </p>
+          <div className="max-w-xl space-y-6 md:max-w-lg">
             <h1 className="text-4xl font-bold tracking-tight text-balance sm:text-5xl">
               Tração certa para o campo
             </h1>
-            <p className="text-lg text-white/90">
-              Pneus, rodas e duplagem com orientação técnica.
+            <p className="text-lg font-medium text-white/90 sm:text-xl">
+              {company.coverageClaim}
             </p>
-            <ul className="flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-wide text-white/90">
-              <li className="rounded-full border border-white/35 bg-black/25 px-3 py-1">
-                Atendimento regional
-              </li>
-              <li className="rounded-full border border-white/35 bg-black/25 px-3 py-1">
-                Revendas e produtores
-              </li>
-            </ul>
-            <div className="flex flex-wrap gap-3 pt-1">
+            <div className="flex flex-wrap gap-3">
               <Link
-                href="#contato"
+                href="#formulario-contato"
                 className={cn(
                   buttonVariants({ size: "lg" }),
                   "rounded-full bg-white text-black hover:bg-zinc-200",
                 )}
               >
-                Solicitar orçamento
+                Orçamento
               </Link>
               <Link
-                href={company.whatsappHref}
+                href={waPrincipal}
                 target="_blank"
                 rel="noopener noreferrer"
                 className={cn(
-                  buttonVariants({ size: "lg", variant: "outline" }),
-                  "rounded-full border-white/45 bg-black/20 text-white backdrop-blur-sm hover:bg-white/15",
+                  buttonVariants({ size: "lg" }),
+                  "rounded-full bg-white text-black hover:bg-zinc-200",
                 )}
               >
-                Falar no WhatsApp
+                WhatsApp
               </Link>
             </div>
-            <p className="pt-2 text-xs text-white/75 md:max-w-md">
-              Resposta comercial via WhatsApp.
-            </p>
           </div>
-          <aside className="hidden w-full max-w-xs space-y-3 rounded-2xl border border-white/25 bg-black/45 p-4 text-white/95 shadow-[0_10px_40px_rgba(0,0,0,0.35)] backdrop-blur md:block">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/75">
-              Painel de operação
-            </p>
-            <div className="space-y-2 text-sm">
-              <div className="rounded-xl border border-white/20 bg-white/5 p-3">
-                <p className="text-[0.7rem] uppercase tracking-wider text-white/70">Cobertura</p>
-                <p className="mt-1 text-base font-semibold">Atendimento regional</p>
-              </div>
-              <div className="rounded-xl border border-white/20 bg-white/5 p-3">
-                <p className="text-[0.7rem] uppercase tracking-wider text-white/70">Especialidade</p>
-                <p className="mt-1 text-base font-semibold">Pneus, rodas e duplagem</p>
-              </div>
-              <div className="rounded-xl border border-white/20 bg-white/5 p-3">
-                <p className="text-[0.7rem] uppercase tracking-wider text-white/70">Canal rápido</p>
-                <p className="mt-1 text-base font-semibold">WhatsApp comercial</p>
-              </div>
-            </div>
-          </aside>
         </div>
       </section>
 
       <section
         id="galeria"
-        className="tech-grain tech-divider-top scroll-mt-24 border-b border-zinc-700 bg-zinc-800 py-16 text-zinc-100"
+        className="tech-grain tech-divider-top scroll-mt-24 border-b border-zinc-700 bg-brand-logo-bg py-16 text-zinc-100"
       >
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="max-w-3xl reveal-on-scroll">
@@ -144,9 +101,9 @@ export default function HomePage() {
               técnico para indicar a configuração certa para cada operação.
             </p>
           </div>
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {services.map((service, idx) => {
-              const icons = [CircleGauge, Wrench, ShieldCheck] as const;
+              const icons = [CircleGauge, Wrench, ShieldCheck, Factory] as const;
               const ServiceIcon = icons[idx % icons.length];
 
               return (
@@ -170,84 +127,40 @@ export default function HomePage() {
           <div className="mt-10">
             <CampaignGallery items={campaignGallery} />
           </div>
-        </div>
-      </section>
-
-      <section className="tech-grain tech-divider-top border-b border-zinc-600 bg-zinc-800 py-16 text-zinc-100">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6">
-          <div className="max-w-3xl reveal-on-scroll">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">
-              Fluxo de atendimento
+          <div className="mt-10 flex flex-col gap-3 border-t border-zinc-600 pt-10 reveal-on-scroll sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-sm text-zinc-300">
+              Pronto para cotar medida e máquina?
             </p>
-            <h2 className="mt-2 text-3xl font-bold tracking-tight">Como funciona</h2>
-          </div>
-          <div className="mt-10 grid gap-4 md:grid-cols-3">
-            {flowSteps.map((flowStep, index) => (
-              <article
-                key={flowStep.step}
-                className="reveal-on-scroll relative rounded-2xl border border-white/10 bg-white/[0.03] p-6 shadow-[0_8px_30px_rgba(0,0,0,0.2)]"
-              >
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-zinc-400">
-                  Etapa {flowStep.step}
-                </p>
-                <h3 className="mt-2 text-lg font-semibold">{flowStep.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-zinc-300">{flowStep.body}</p>
-                {index < flowSteps.length - 1 ? (
-                  <ArrowRight
-                    className="absolute -right-2 top-1/2 hidden size-4 -translate-y-1/2 text-zinc-500 md:block"
-                    aria-hidden
-                  />
-                ) : null}
-              </article>
-            ))}
+            <ConversionCtas variant="onDark" className="sm:justify-end" />
           </div>
         </div>
       </section>
 
       <section
         id="produtos"
-        className="tech-divider-top border-y border-zinc-300 bg-zinc-100 py-16 scroll-mt-24"
+        className="products-texture tech-divider-top border-y border-zinc-300 py-16 scroll-mt-24"
       >
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="reveal-on-scroll flex flex-col justify-between gap-4 md:flex-row md:items-end">
             <div className="max-w-2xl">
               <h2 className="text-3xl font-bold tracking-tight">Produtos</h2>
               <p className="mt-2 text-zinc-600">
-                Referências de medidas e marcas mais comuns no agronegócio. A
-                disponibilidade real depende do estoque do dia — confirme com a
-                equipe antes de deslocar.
+                Medidas e marcas de referência no agronegócio. Disponibilidade e
+                projeto sob consulta com a equipe.
               </p>
             </div>
-            <Link
-              href="#contato"
-              className={cn(buttonVariants({ variant: "outline" }), "rounded-full")}
-            >
-              Consulte estoque
-            </Link>
+            <ConversionCtas variant="onLight" className="md:justify-end" />
           </div>
           <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {products.map((p) => (
               <Card className="reveal-on-scroll border-zinc-300 bg-zinc-50 shadow-sm ring-1 ring-transparent transition hover:-translate-y-0.5 hover:shadow-lg hover:ring-zinc-900/10" key={p.id}>
-                <CardHeader>
+                <CardHeader className="pb-2">
                   <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
                     {p.tag}
                   </p>
                   <CardTitle className="text-xl">{p.title}</CardTitle>
-                  <CardDescription className="text-base text-zinc-600">
-                    {p.description}
-                  </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-3 text-sm text-zinc-700">
-                  <div className="overflow-hidden rounded-xl border border-zinc-200 bg-zinc-100">
-                    <Image
-                      src={p.imageSrc}
-                      alt={p.imageAlt}
-                      width={1000}
-                      height={700}
-                      className="h-40 w-full object-cover"
-                      sizes="(max-width: 1024px) 100vw, 33vw"
-                    />
-                  </div>
+                <CardContent className="space-y-4 pt-0 text-sm text-zinc-700">
                   <div>
                     <p className="font-semibold text-zinc-900">Medidas em destaque</p>
                     <div className="mt-2 flex flex-wrap gap-1.5">
@@ -270,8 +183,8 @@ export default function HomePage() {
                     <p className="mt-0.5 leading-snug">{p.marcas}</p>
                   </div>
                 </CardContent>
-                <CardFooter className="text-sm font-semibold text-zinc-900">
-                  {p.disponibilidade}
+                <CardFooter className="flex flex-col items-stretch gap-3 border-t border-zinc-200 pt-4">
+                  <ConversionCtas variant="onLight" size="sm" />
                 </CardFooter>
               </Card>
             ))}
@@ -279,48 +192,49 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="sobre" className="tech-grain tech-divider-top border-y border-zinc-600 bg-zinc-800 py-16 text-zinc-100 scroll-mt-24">
-        <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:items-center">
-          <div className="reveal-on-scroll">
-            <h2 className="text-3xl font-bold tracking-tight text-white">Sobre a Gaúcho Pneus</h2>
-            <p className="mt-4 text-zinc-300">
-              A {company.name} reúne experiência em pneus e rodas para o agronegócio,
-              com atendimento consultivo para produtores, cooperativas e oficinas.
-              Nossa prioridade é manter suas máquinas rodando com segurança.
-            </p>
-            <ul className="mt-6 space-y-3">
-              {highlights.map((h) => (
-                <li key={h} className="flex gap-2 text-zinc-200">
-                  <Check className="mt-0.5 size-5 shrink-0 text-emerald-500" aria-hidden />
-                  <span>{h}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="reveal-on-scroll rounded-2xl border border-zinc-500 bg-zinc-700/70 p-8 shadow-inner">
-            <p className="text-sm font-semibold uppercase tracking-widest text-zinc-400">
-              Identidade
-            </p>
-            <p className="mt-3 text-lg font-medium text-zinc-100">
-              Preto e branco, visual industrial e leitura clara no campo ou na
-              cidade — alinhado à presença digital da marca.
-            </p>
-            <p className="mt-4 text-zinc-300">
-              Substitua textos genéricos por história real da empresa, CNPJ,
-              horários e localização exata quando publicar.
-            </p>
+      <section
+        id="faq"
+        className="tech-grain tech-divider-top border-y border-zinc-600 bg-brand-logo-bg py-16 text-zinc-100 scroll-mt-24"
+        aria-labelledby="faq-heading"
+      >
+        <FaqJsonLd />
+        <div className="mx-auto max-w-3xl px-4 sm:px-6">
+          <h2 id="faq-heading" className="text-3xl font-bold tracking-tight text-white">
+            Perguntas frequentes
+          </h2>
+          <p className="mt-2 text-zinc-300">
+            Respostas diretas sobre produtos, orçamento, atendimento e localização — pensado para
+            quem busca pneus e rodas agrícolas na região.
+          </p>
+          <dl className="mt-10 space-y-8">
+            {faqItems.map((item) => (
+              <div key={item.question} className="reveal-on-scroll border-b border-zinc-600 pb-8 last:border-b-0">
+                <dt className="text-lg font-semibold text-white">{item.question}</dt>
+                <dd className="mt-2 text-sm leading-relaxed text-zinc-300">
+                  {resolveFaqAnswerText(item.answer)}
+                </dd>
+              </div>
+            ))}
+          </dl>
+          <div className="mt-10 flex flex-col gap-3 border-t border-zinc-600 pt-10 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-sm text-zinc-300">Não encontrou o que precisa?</p>
+            <ConversionCtas variant="onDark" className="sm:justify-end" />
           </div>
         </div>
       </section>
 
-      <section id="contato" className="tech-grain tech-divider-top border-t border-zinc-600 bg-zinc-800 py-16 text-zinc-100 scroll-mt-24">
+      <section id="contato" className="tech-grain tech-divider-top border-t border-zinc-600 bg-brand-logo-bg py-16 text-zinc-100 scroll-mt-24">
         <div className="mx-auto grid max-w-6xl gap-10 px-4 sm:px-6 lg:grid-cols-2">
           <div className="reveal-on-scroll rounded-2xl border border-zinc-500 bg-zinc-700/70 p-6 sm:p-8">
             <h2 className="text-3xl font-bold tracking-tight text-white">Contato</h2>
             <p className="mt-2 text-zinc-300">
-              Envie sua necessidade (medida, máquina, quantidade). Validamos os
-              dados no servidor e respondemos pelo canal preferido.
+              Envie medida, máquina e quantidade pelo formulário — a mensagem é
+              encaminhada por e-mail à equipe quando o envio estiver ativo no
+              servidor. Para resposta imediata, use o WhatsApp ou ligue.
             </p>
+            <div className="mt-6">
+              <ConversionCtas variant="onDark" />
+            </div>
             <ul className="mt-6 space-y-3 text-sm text-zinc-200">
               <li className="leading-snug">
                 <span className="font-medium">Localização: </span>
@@ -350,7 +264,7 @@ export default function HomePage() {
                       <span className="text-zinc-300">{contact.name}:</span>
                       <Link
                         className="font-semibold text-[#25D366] underline underline-offset-2 hover:text-[#6ee7a8]"
-                        href={contact.whatsappHref}
+                        href={whatsappWithPrefill(contact.whatsappHref)}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -365,8 +279,42 @@ export default function HomePage() {
               <CompanyMap />
             </div>
           </div>
-          <div className="reveal-on-scroll">
-            <ContactForm />
+          <div className="reveal-on-scroll flex flex-col gap-10 scroll-mt-28">
+            <div id="formulario-contato" className="scroll-mt-28">
+              <ContactForm />
+            </div>
+            <aside
+              id="sobre"
+              className="scroll-mt-28 border-t border-zinc-600 pt-10"
+              aria-labelledby="sobre-heading"
+            >
+              <h2
+                id="sobre-heading"
+                className="text-2xl font-bold tracking-tight text-white sm:text-3xl"
+              >
+                Sobre a Gaúcho Pneus
+              </h2>
+              <p className="mt-3 text-lg font-semibold text-zinc-100 sm:text-xl">
+                {company.coverageClaim}
+              </p>
+              <p className="mt-4 text-zinc-300">
+                A {company.name} reúne experiência em pneus e rodas para o agronegócio, com
+                atendimento consultivo para produtores, cooperativas e oficinas. Nossa prioridade é
+                manter suas máquinas rodando com segurança.
+              </p>
+              <ul className="mt-6 space-y-3">
+                {highlights.map((h) => (
+                  <li key={`contato-${h}`} className="flex gap-2 text-zinc-200">
+                    <Check className="mt-0.5 size-5 shrink-0 text-emerald-500" aria-hidden />
+                    <span>{h}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-8 flex flex-col gap-3 border-t border-zinc-600 pt-8 sm:flex-row sm:items-center sm:justify-between">
+                <p className="text-sm text-zinc-300">Solicite orçamento ou fale pelo WhatsApp.</p>
+                <ConversionCtas variant="onDark" className="sm:justify-end" />
+              </div>
+            </aside>
           </div>
         </div>
       </section>

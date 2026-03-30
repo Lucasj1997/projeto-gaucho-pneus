@@ -11,7 +11,8 @@ import {
 } from "@/lib/validations/contact";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
-import { useState } from "react";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
 const defaultValues: ContactFormValues = {
@@ -24,6 +25,7 @@ const defaultValues: ContactFormValues = {
 export function ContactForm() {
   const [serverError, setServerError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const feedbackRef = useRef<HTMLDivElement>(null);
 
   const form = useForm<ContactFormValues, unknown, ContactPayload>({
     resolver: zodResolver(contactSchema),
@@ -61,6 +63,17 @@ export function ContactForm() {
       setServerError("Erro de rede. Verifique sua conexão.");
     }
   }
+
+  useEffect(() => {
+    if (success === null && serverError === null) return;
+    const el = feedbackRef.current;
+    if (!el) return;
+    const id = window.requestAnimationFrame(() => {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+      el.focus({ preventScroll: true });
+    });
+    return () => window.cancelAnimationFrame(id);
+  }, [success, serverError]);
 
   return (
     <form
@@ -126,18 +139,43 @@ export function ContactForm() {
             {form.formState.errors.message.message}
           </p>
         ) : null}
+        <p className="text-xs leading-snug text-zinc-500">
+          Ao enviar, você concorda com o tratamento dos dados conforme a{" "}
+          <Link
+            href="/privacidade"
+            className="font-medium text-zinc-700 underline underline-offset-2 hover:text-zinc-900"
+          >
+            página de privacidade
+          </Link>
+          .
+        </p>
       </div>
 
-      {serverError ? (
-        <p className="text-sm text-red-600" role="alert">
-          {serverError}
-        </p>
-      ) : null}
-      {success ? (
-        <p className="text-sm text-emerald-700" role="status">
-          {success}
-        </p>
-      ) : null}
+      <div
+        ref={feedbackRef}
+        id="contact-form-feedback"
+        className="scroll-mt-32 min-h-0 outline-none"
+        tabIndex={success || serverError ? -1 : undefined}
+        aria-live={serverError ? "assertive" : success ? "polite" : "off"}
+        aria-atomic="true"
+      >
+        {serverError ? (
+          <p
+            className="rounded-xl border-2 border-red-600 bg-red-50 px-4 py-3 text-sm font-medium text-red-900"
+            role="alert"
+          >
+            {serverError}
+          </p>
+        ) : null}
+        {success ? (
+          <p
+            className="rounded-xl border-2 border-emerald-600 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-950 shadow-sm"
+            role="status"
+          >
+            {success}
+          </p>
+        ) : null}
+      </div>
 
       <Button
         type="submit"

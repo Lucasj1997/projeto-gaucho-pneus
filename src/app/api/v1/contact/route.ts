@@ -1,3 +1,4 @@
+import { sendContactEmail } from "@/lib/email/send-contact";
 import { clientKeyFromRequest, rateLimitContact } from "@/lib/security/rate-limit";
 import { contactSchema } from "@/lib/validations/contact";
 import { NextResponse } from "next/server";
@@ -71,10 +72,52 @@ export async function POST(req: Request) {
     );
   }
 
+  const data = parsed.data;
+
+  const hasResend =
+    Boolean(process.env.RESEND_API_KEY?.trim()) &&
+    Boolean(process.env.CONTACT_EMAIL_TO?.trim());
+  const isDev = process.env.NODE_ENV === "development";
+
+  if (!hasResend) {
+    if (isDev) {
+      console.info("[contact] DEV — e-mail não configurado. Dados:", data);
+      return NextResponse.json(
+        {
+          ok: true,
+          message:
+            "Modo desenvolvimento: os dados foram registrados no terminal do servidor (Resend não configurado). Em produção configure RESEND_API_KEY e CONTACT_EMAIL_TO.",
+        },
+        { status: 200, headers: corsHeaders },
+      );
+    }
+    return NextResponse.json(
+      {
+        error:
+          "O envio pelo formulário não está disponível no momento. Use o WhatsApp ou o e-mail de contato indicado na página.",
+        code: "EMAIL_NOT_CONFIGURED",
+      },
+      { status: 503, headers: corsHeaders },
+    );
+  }
+
+  const sent = await sendContactEmail(data);
+  if (!sent.ok) {
+    return NextResponse.json(
+      {
+        error:
+          "Não foi possível enviar sua mensagem agora. Tente pelo WhatsApp ou envie e-mail direto para contato.",
+        code: "SEND_FAILED",
+      },
+      { status: 502, headers: corsHeaders },
+    );
+  }
+
   return NextResponse.json(
     {
       ok: true,
-      message: "Recebemos sua mensagem. Em breve retornamos o contato.",
+      message:
+        "Mensagem enviada. Retornaremos pelo e-mail ou telefone informados em breve.",
     },
     { status: 200, headers: corsHeaders },
   );

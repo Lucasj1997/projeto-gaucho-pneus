@@ -1,4 +1,5 @@
 import { company } from "@/lib/mock-data";
+import { whatsappWithPrefill } from "@/lib/whatsapp";
 import Link from "next/link";
 
 export function WhatsappBrandIcon({ className }: { className?: string }) {
@@ -17,9 +18,10 @@ export function WhatsappBrandIcon({ className }: { className?: string }) {
 
 /** Botão fixo com ícone do WhatsApp — visível em todas as páginas. */
 export function WhatsappFloat() {
+  const wa = whatsappWithPrefill(company.whatsappHref);
   return (
     <Link
-      href={company.whatsappHref}
+      href={wa}
       target="_blank"
       rel="noopener noreferrer"
       className="fixed bottom-5 right-5 z-[60] flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_8px_30px_rgb(0,0,0,0.35)] ring-4 ring-white/90 transition hover:scale-[1.06] hover:bg-[#20BD5A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-zinc-950 sm:bottom-7 sm:right-7 sm:h-[4.25rem] sm:w-[4.25rem]"

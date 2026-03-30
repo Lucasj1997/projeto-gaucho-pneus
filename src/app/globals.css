@@ -5,6 +5,8 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  /* Fundo sólido do ficheiro do logo (horizontal) — base da identidade escura */
+  --color-brand-logo-bg: #121212;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
@@ -130,6 +132,23 @@
 }
 
 @layer utilities {
+  /**
+   * Cabeçalho fixo com logo grande — evita título/conteúdo “por baixo” do menu.
+   */
+  .pt-below-site-header {
+    padding-top: calc(9rem + env(safe-area-inset-top, 0px));
+  }
+  @media (min-width: 640px) {
+    .pt-below-site-header {
+      padding-top: calc(11rem + env(safe-area-inset-top, 0px));
+    }
+  }
+  @media (min-width: 1024px) {
+    .pt-below-site-header {
+      padding-top: calc(13rem + env(safe-area-inset-top, 0px));
+    }
+  }
+
   .tech-grain {
     position: relative;
     isolation: isolate;
@@ -148,6 +167,36 @@
       radial-gradient(rgb(255 255 255 / 0.08) 0.55px, transparent 0.55px);
     background-size: auto, auto, 3px 3px;
     background-position: center, center, 0 0;
+  }
+
+  /**
+   * Fundo da secção Produtos: mesma “família” visual do tech-grain (ruído fino +
+   * vinhetas), em tons zinc para não competir com texto e cards.
+   */
+  .products-texture {
+    position: relative;
+    isolation: isolate;
+    background-color: rgb(244 244 245);
+  }
+
+  .products-texture::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(ellipse 120% 80% at 10% -10%, rgb(24 24 27 / 0.05), transparent 55%),
+      radial-gradient(ellipse 100% 70% at 100% 15%, rgb(24 24 27 / 0.04), transparent 50%),
+      radial-gradient(ellipse 90% 60% at 50% 110%, rgb(24 24 27 / 0.045), transparent 55%),
+      radial-gradient(rgb(24 24 27 / 0.065) 0.45px, transparent 0.45px);
+    background-size: 100% 100%, 100% 100%, 100% 100%, 3.5px 3.5px;
+    background-position: 0 0, 0 0, 0 0, 0 0;
+  }
+
+  .products-texture > * {
+    position: relative;
+    z-index: 1;
   }
 
   .tech-divider-top {

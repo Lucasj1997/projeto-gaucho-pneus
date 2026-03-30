@@ -1,4 +1,13 @@
+import { ConversionCtas } from "@/components/conversion-ctas";
+import { WhatsappBrandIcon } from "@/components/whatsapp-float";
 import { company } from "@/lib/mock-data";
+import { whatsappWithPrefill } from "@/lib/whatsapp";
+import {
+  PATH_AJUDA_MEDIDA_PNEU,
+  PATH_SERVICOS_COLHEITADEIRA,
+  PATH_SERVICOS_DUPLAGEM,
+  PATH_SERVICOS_TRATOR,
+} from "@/lib/routes";
 import Link from "next/link";
 
 function InstagramIcon({ className }: { className?: string }) {
@@ -17,14 +26,19 @@ function FacebookIcon({ className }: { className?: string }) {
   );
 }
 
+const socialLinkClass =
+  "inline-flex min-h-11 w-full max-w-[14rem] items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm text-zinc-200 transition hover:border-white/20 hover:bg-white/10 hover:text-white sm:max-w-none sm:flex-1 sm:basis-[calc(50%-0.375rem)]";
+
 export function SiteFooter() {
   const year = new Date().getFullYear();
+  const wa = whatsappWithPrefill(company.whatsappHref);
   return (
-    <footer className="border-t border-zinc-600 bg-zinc-800 text-zinc-100">
+    <footer className="border-t border-zinc-600 bg-brand-logo-bg text-zinc-100">
       <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 sm:px-6 md:flex-row md:items-center md:justify-between">
         <div>
           <p className="text-lg font-semibold">{company.name}</p>
           <p className="text-sm text-zinc-400">{company.tagline}</p>
+          <p className="mt-1 text-sm font-medium text-zinc-200">{company.coverageClaim}</p>
           <p className="mt-2 text-sm text-zinc-400">{company.hours}</p>
         </div>
         <div className="flex flex-col gap-2 text-sm">
@@ -43,40 +57,90 @@ export function SiteFooter() {
           >
             {company.email}
           </Link>
+          <ConversionCtas variant="onDark" size="sm" className="mt-3" />
           <Link
-            className="w-fit font-medium text-[#25D366] underline-offset-4 hover:text-[#20BD5A] hover:underline"
-            href={company.whatsappHref}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/privacidade"
+            className="mt-2 w-fit text-zinc-400 underline-offset-4 hover:text-zinc-200 hover:underline"
           >
-            WhatsApp {company.phoneDisplay}
+            Privacidade e dados
           </Link>
-          <div className="mt-1 flex items-center gap-3">
-            <Link
-              className="inline-flex items-center gap-1.5 text-zinc-300 hover:text-white"
-              href={company.socialLinks.instagram}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Instagram da Gaúcho Pneus"
-            >
-              <InstagramIcon className="size-4" />
-              Instagram
+          <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-zinc-500">
+            Páginas do site
+          </p>
+          <nav className="flex flex-col gap-1.5 text-zinc-300" aria-label="Conteúdo">
+            <Link className="w-fit hover:text-white hover:underline" href={PATH_SERVICOS_TRATOR}>
+              Pneus para trator
             </Link>
             <Link
-              className="inline-flex items-center gap-1.5 text-zinc-300 hover:text-white"
-              href={company.socialLinks.facebook}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Facebook da Gaúcho Pneus"
+              className="w-fit hover:text-white hover:underline"
+              href={PATH_SERVICOS_COLHEITADEIRA}
             >
-              <FacebookIcon className="size-4" />
-              Facebook
+              Pneus para colheitadeira
             </Link>
+            <Link className="w-fit hover:text-white hover:underline" href={PATH_SERVICOS_DUPLAGEM}>
+              Duplagem
+            </Link>
+            <Link className="w-fit hover:text-white hover:underline" href={PATH_AJUDA_MEDIDA_PNEU}>
+              Como ler a medida do pneu
+            </Link>
+          </nav>
+
+          <div className="mt-5 border-t border-white/10 pt-5">
+            <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
+              Redes e WhatsApp
+            </p>
+            <ul
+              className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
+              aria-label="Redes sociais e mensagens"
+            >
+              <li>
+                <Link
+                  className={socialLinkClass}
+                  href={company.socialLinks.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram da Gaúcho Pneus"
+                >
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-white/10 text-white">
+                    <InstagramIcon className="size-5" aria-hidden />
+                  </span>
+                  <span className="leading-snug">Instagram</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className={socialLinkClass}
+                  href={company.socialLinks.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook da Gaúcho Pneus"
+                >
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-white/10 text-white">
+                    <FacebookIcon className="size-5" aria-hidden />
+                  </span>
+                  <span className="leading-snug">Facebook</span>
+                </Link>
+              </li>
+              <li className="sm:col-span-2 lg:col-span-1">
+                <Link
+                  className={`${socialLinkClass} border-[#25D366]/40 bg-[#128C7E]/25 hover:bg-[#128C7E]/40`}
+                  href={wa}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="WhatsApp da Gaúcho Pneus"
+                >
+                  <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-[#25D366] text-white">
+                    <WhatsappBrandIcon className="size-5" aria-hidden />
+                  </span>
+                  <span className="leading-snug">WhatsApp</span>
+                </Link>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
-      <div className="border-t border-white/10 py-4 text-center text-xs text-zinc-500">
-        © {year} {company.name}. Site institucional.
+      <div className="border-t border-white/10 px-4 py-4 pb-[max(1rem,env(safe-area-inset-bottom,0px))] text-center text-xs leading-relaxed text-zinc-500 md:pb-4">
+        © {year} {company.name}. Site institucional. Produzido por LS sites.
       </div>
     </footer>
   );
