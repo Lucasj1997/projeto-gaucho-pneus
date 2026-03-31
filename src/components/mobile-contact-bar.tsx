@@ -7,7 +7,10 @@ import Link from "next/link";
 
 export function MobileContactBar() {
   const contactNames = company.contacts.map((contact) => contact.name).join(" / ");
-  const wa = whatsappWithPrefill(company.whatsappHref);
+  const marcianoWa =
+    company.contacts.find((contact) => contact.name === "Marciano")?.whatsappHref ??
+    company.whatsappHref;
+  const wa = whatsappWithPrefill(marcianoWa);
 
   return (
     <div

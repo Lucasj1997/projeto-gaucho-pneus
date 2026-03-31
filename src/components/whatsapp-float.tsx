@@ -18,7 +18,10 @@ export function WhatsappBrandIcon({ className }: { className?: string }) {
 
 /** Botão fixo com ícone do WhatsApp — visível em todas as páginas. */
 export function WhatsappFloat() {
-  const wa = whatsappWithPrefill(company.whatsappHref);
+  const marcianoWa =
+    company.contacts.find((contact) => contact.name === "Marciano")?.whatsappHref ??
+    company.whatsappHref;
+  const wa = whatsappWithPrefill(marcianoWa);
   return (
     <Link
       href={wa}

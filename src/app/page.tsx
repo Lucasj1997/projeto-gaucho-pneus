@@ -31,7 +31,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function HomePage() {
-  const waPrincipal = whatsappWithPrefill(company.whatsappHref);
+  const marcianoWa =
+    company.contacts.find((contact) => contact.name === "Marciano")?.whatsappHref ??
+    company.whatsappHref;
+  const waPrincipal = whatsappWithPrefill(marcianoWa);
 
   return (
     <>

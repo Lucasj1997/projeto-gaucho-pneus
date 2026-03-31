@@ -64,7 +64,10 @@ function FacebookIcon({ className }: { className?: string }) {
 }
 
 export function SiteHeader({ className }: { className?: string }) {
-  const wa = whatsappWithPrefill(company.whatsappHref);
+  const marcianoWa =
+    company.contacts.find((contact) => contact.name === "Marciano")?.whatsappHref ??
+    company.whatsappHref;
+  const wa = whatsappWithPrefill(marcianoWa);
   const { links, isHome, formularioHref } = useNavContext();
   const [heroScrolled, setHeroScrolled] = useState(false);
   const headerSolid = !isHome || heroScrolled;
