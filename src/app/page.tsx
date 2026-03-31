@@ -161,6 +161,21 @@ export default function HomePage() {
                   <CardTitle className="text-xl">{p.title}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4 pt-0 text-sm text-zinc-700">
+                  <figure className="overflow-hidden rounded-xl border border-zinc-200 bg-zinc-100">
+                    <div className="relative aspect-[16/10] w-full">
+                      <Image
+                        src={p.imagemExemplo.src}
+                        alt={p.imagemExemplo.alt}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover object-center"
+                        loading="lazy"
+                      />
+                    </div>
+                    <figcaption className="px-3 py-2 text-xs text-zinc-500">
+                      Imagem ilustrativa de medida/modelo.
+                    </figcaption>
+                  </figure>
                   <div>
                     <p className="font-semibold text-zinc-900">Medidas em destaque</p>
                     <div className="mt-2 flex flex-wrap gap-1.5">

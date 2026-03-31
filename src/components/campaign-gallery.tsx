@@ -4,6 +4,7 @@ import type { CampaignItem } from "@/lib/mock-data/campanhas";
 import { ChevronLeft, ChevronRight, Maximize2, X } from "lucide-react";
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 type Props = {
   items: CampaignItem[];
@@ -11,6 +12,7 @@ type Props = {
 
 export function CampaignGallery({ items }: Props) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const [canUsePortal, setCanUsePortal] = useState(false);
   const isOpen = activeIndex !== null;
 
   const closePreview = useCallback(() => {
@@ -29,6 +31,10 @@ export function CampaignGallery({ items }: Props) {
   );
 
   useEffect(() => {
+    setCanUsePortal(true);
+  }, []);
+
+  useEffect(() => {
     if (!isOpen) return;
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") closePreview();
@@ -45,6 +51,66 @@ export function CampaignGallery({ items }: Props) {
   }, [closePreview, goToSibling, isOpen]);
 
   const activeItem = activeIndex === null ? null : items[activeIndex];
+  const previewModal =
+    isOpen && activeItem ? (
+      <div
+        className="fixed inset-0 z-[120] flex items-center justify-center bg-black/90 p-4"
+        role="dialog"
+        aria-modal="true"
+        aria-label={`Visualização ampliada: ${activeItem.tag}`}
+        onClick={closePreview}
+      >
+        <button
+          type="button"
+          onClick={closePreview}
+          className="absolute right-4 top-4 z-10 inline-flex size-10 items-center justify-center rounded-full border border-white/30 bg-black/45 text-white backdrop-blur-sm transition hover:bg-black/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+          aria-label="Fechar visualização"
+        >
+          <X className="size-5" aria-hidden />
+        </button>
+
+        <div
+          className="relative mx-auto flex w-full max-w-5xl items-center gap-2 sm:gap-4"
+          onClick={(event) => event.stopPropagation()}
+        >
+          <button
+            type="button"
+            onClick={() => goToSibling(-1)}
+            className="inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-white/30 bg-black/45 text-white backdrop-blur-sm transition hover:bg-black/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            aria-label="Imagem anterior"
+          >
+            <ChevronLeft className="size-6" aria-hidden />
+          </button>
+
+          <figure className="relative w-full overflow-hidden rounded-2xl border border-white/20 bg-zinc-950/90">
+            <div className="relative aspect-[16/10] w-full max-h-[80vh]">
+              <Image
+                src={activeItem.src}
+                alt={activeItem.alt}
+                fill
+                sizes="100vw"
+                className="object-contain"
+                priority
+              />
+            </div>
+            <figcaption className="border-t border-white/10 px-4 py-3 text-sm text-zinc-200">
+              <span className="font-semibold text-white">{activeItem.tag}</span>
+              <span className="mx-2 text-zinc-500">•</span>
+              {activeIndex + 1} de {items.length}
+            </figcaption>
+          </figure>
+
+          <button
+            type="button"
+            onClick={() => goToSibling(1)}
+            className="inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-white/30 bg-black/45 text-white backdrop-blur-sm transition hover:bg-black/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+            aria-label="Próxima imagem"
+          >
+            <ChevronRight className="size-6" aria-hidden />
+          </button>
+        </div>
+      </div>
+    ) : null;
 
   return (
     <div role="region" aria-roledescription="galeria" aria-label="Galeria de imagens dos serviços">
@@ -116,65 +182,7 @@ export function CampaignGallery({ items }: Props) {
         ))}
       </ul>
 
-      {isOpen && activeItem ? (
-        <div
-          className="fixed inset-0 z-[80] flex items-center justify-center bg-black/90 p-4"
-          role="dialog"
-          aria-modal="true"
-          aria-label={`Visualização ampliada: ${activeItem.tag}`}
-          onClick={closePreview}
-        >
-          <button
-            type="button"
-            onClick={closePreview}
-            className="absolute right-4 top-4 z-10 inline-flex size-10 items-center justify-center rounded-full border border-white/30 bg-black/45 text-white backdrop-blur-sm transition hover:bg-black/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-            aria-label="Fechar visualização"
-          >
-            <X className="size-5" aria-hidden />
-          </button>
-
-          <div
-            className="relative mx-auto flex w-full max-w-5xl items-center gap-2 sm:gap-4"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <button
-              type="button"
-              onClick={() => goToSibling(-1)}
-              className="inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-white/30 bg-black/45 text-white backdrop-blur-sm transition hover:bg-black/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-              aria-label="Imagem anterior"
-            >
-              <ChevronLeft className="size-6" aria-hidden />
-            </button>
-
-            <figure className="relative w-full overflow-hidden rounded-2xl border border-white/20 bg-zinc-950/90">
-              <div className="relative aspect-[16/10] w-full max-h-[80vh]">
-                <Image
-                  src={activeItem.src}
-                  alt={activeItem.alt}
-                  fill
-                  sizes="100vw"
-                  className="object-contain"
-                  priority
-                />
-              </div>
-              <figcaption className="border-t border-white/10 px-4 py-3 text-sm text-zinc-200">
-                <span className="font-semibold text-white">{activeItem.tag}</span>
-                <span className="mx-2 text-zinc-500">•</span>
-                {activeIndex + 1} de {items.length}
-              </figcaption>
-            </figure>
-
-            <button
-              type="button"
-              onClick={() => goToSibling(1)}
-              className="inline-flex size-10 shrink-0 items-center justify-center rounded-full border border-white/30 bg-black/45 text-white backdrop-blur-sm transition hover:bg-black/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
-              aria-label="Próxima imagem"
-            >
-              <ChevronRight className="size-6" aria-hidden />
-            </button>
-          </div>
-        </div>
-      ) : null}
+      {canUsePortal && previewModal ? createPortal(previewModal, document.body) : null}
 
       <p className="mt-3 text-center text-xs text-zinc-500 md:hidden">
         Deslize para o lado para ver mais fotos ou toque para ampliar.
