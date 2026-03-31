@@ -29,6 +29,11 @@ export const metadata: Metadata = {
   description: seo.description,
   keywords: [...seo.keywords],
   alternates: { canonical: "/" },
+  icons: {
+    icon: [{ url: "/favicon-gaucho-v2.png", type: "image/png" }],
+    shortcut: ["/favicon-gaucho-v2.png"],
+    apple: [{ url: "/favicon-gaucho-v2.png", type: "image/png" }],
+  },
   robots: {
     index: true,
     follow: true,
