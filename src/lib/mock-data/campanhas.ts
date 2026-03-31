@@ -11,7 +11,7 @@ export type CampaignItem = {
 const base = "/images/campanhas";
 const prancheta = "/images/prancheta";
 
-/** Artes enviadas (Prancheta 1–5) — em destaque na galeria. */
+/** Artes enviadas (Prancheta 1–7) — em destaque na galeria. */
 const pranchetaItems: CampaignItem[] = [
   {
     src: `${prancheta}/prancheta-1.png`,
@@ -37,6 +37,16 @@ const pranchetaItems: CampaignItem[] = [
     src: `${prancheta}/prancheta-5.png`,
     alt: "Colheitadeira New Holland TC5090 ao pôr do sol; operações de colheita — Gaúcho Pneus.",
     tag: "New Holland",
+  },
+  {
+    src: `${prancheta}/prancheta-6.png`,
+    alt: "Pneus agrícolas prontos para montagem em pátio ao entardecer, com caminhão e conjunto de pneus em destaque.",
+    tag: "Pronta montagem",
+  },
+  {
+    src: `${prancheta}/prancheta-7.png`,
+    alt: "Duas fotos de trator com pneus duplos em close, mostrando tração e rodado em operação no campo.",
+    tag: "Pneus duplos",
   },
 ];
 
