@@ -5,12 +5,27 @@ import { NextResponse } from "next/server";
 
 const MAX_BODY = 16_384;
 
-export async function POST(req: Request) {
-  const corsHeaders = {
-    "Access-Control-Allow-Origin": process.env.NEXT_PUBLIC_APP_URL ?? "*",
+function buildCorsHeaders(req?: Request): Record<string, string> {
+  const configuredOrigin = process.env.NEXT_PUBLIC_APP_URL?.trim();
+  const reqOrigin = req?.headers.get("origin")?.trim();
+  const isDev = process.env.NODE_ENV === "development";
+  const devFallback = "http://localhost:3000";
+
+  // Em produção, evita fallback wildcard para reduzir superfície CORS.
+  const allowOrigin =
+    configuredOrigin ??
+    (isDev ? reqOrigin || devFallback : reqOrigin || "https://www.seudominio.com.br");
+
+  return {
+    "Access-Control-Allow-Origin": allowOrigin,
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type",
+    Vary: "Origin",
   };
+}
+
+export async function POST(req: Request) {
+  const corsHeaders = buildCorsHeaders(req);
 
   const limited = rateLimitContact(
     `contact:${clientKeyFromRequest(req.headers)}`,
@@ -126,10 +141,6 @@ export async function POST(req: Request) {
 export function OPTIONS() {
   return new NextResponse(null, {
     status: 204,
-    headers: {
-      "Access-Control-Allow-Origin": process.env.NEXT_PUBLIC_APP_URL ?? "*",
-      "Access-Control-Allow-Methods": "POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
-    },
+    headers: buildCorsHeaders(),
   });
 }

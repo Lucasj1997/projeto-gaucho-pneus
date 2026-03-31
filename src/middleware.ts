@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 
 export function middleware() {
   const response = NextResponse.next();
+  const isDev = process.env.NODE_ENV !== "production";
 
   response.headers.set("X-Frame-Options", "DENY");
   response.headers.set("X-Content-Type-Options", "nosniff");
@@ -22,9 +23,12 @@ export function middleware() {
     );
   }
 
+  const scriptSrc = isDev
+    ? "script-src 'self' 'unsafe-inline' 'unsafe-eval'"
+    : "script-src 'self' 'unsafe-inline'";
   response.headers.set(
     "Content-Security-Policy",
-    "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; media-src 'self' https://videos.pexels.com; font-src 'self' data:; connect-src 'self'; frame-src 'self' https://www.google.com https://maps.google.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
+    `default-src 'self'; ${scriptSrc}; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; media-src 'self' https://videos.pexels.com; font-src 'self' data:; connect-src 'self'; frame-src 'self' https://www.google.com https://maps.google.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'`,
   );
 
   return response;
