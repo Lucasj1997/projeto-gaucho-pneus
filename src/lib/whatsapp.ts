@@ -1,10 +1,6 @@
-import { PATH_AJUDA_MEDIDA_PNEU } from "@/lib/routes";
-import { getSiteUrl } from "@/lib/seo";
-
-/** Mensagem padrão com link para o guia de medida (URL absoluta). */
+/** Mensagem padrão do CTA de orçamento no WhatsApp. */
 export function buildWhatsappOrcamentoMessage(): string {
-  const guia = `${getSiteUrl()}${PATH_AJUDA_MEDIDA_PNEU}`;
-  return `Olá! Vim do site Gaúcho Pneus e quero orçamento.\n\nComo ler a medida do pneu: ${guia}`;
+  return "Olá! Vim do site Gaúcho Pneus e quero orçamento.";
 }
 
 /** Anexa `?text=` à URL `https://wa.me/...` de forma segura. */

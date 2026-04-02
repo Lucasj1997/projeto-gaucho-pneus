@@ -28,7 +28,7 @@ export const faqItems: readonly FaqItem[] = [
   {
     question: "Como leio a medida do pneu na lateral?",
     answer:
-      "Na lateral do pneu aparecem números como 420/85 R 30 (padrão radial) ou 23.1-26 (diagonal/flotação). Cada parte indica largura, perfil e diâmetro do aro. Há um guia passo a passo no site: {{AJUDA_MEDIDA_URL}}",
+      "Na lateral do pneu aparecem números como 420/85 R 30 (padrão radial) ou 23.1-26 (diagonal/flotação). Cada parte indica largura, perfil e diâmetro do aro.",
   },
   {
     question: "A Gaúcho Pneus faz duplagem?",
