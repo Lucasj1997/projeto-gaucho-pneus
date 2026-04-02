@@ -9,7 +9,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { WhatsappBrandIcon } from "@/components/whatsapp-float";
-import { company } from "@/lib/mock-data";
+import { company, whatsappQuickHref } from "@/lib/mock-data";
 import { whatsappWithPrefill } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
 import { Menu } from "lucide-react";
@@ -64,10 +64,7 @@ function FacebookIcon({ className }: { className?: string }) {
 }
 
 export function SiteHeader({ className }: { className?: string }) {
-  const marcianoWa =
-    company.contacts.find((contact) => contact.name === "Marciano")?.whatsappHref ??
-    company.whatsappHref;
-  const wa = whatsappWithPrefill(marcianoWa);
+  const wa = whatsappWithPrefill(whatsappQuickHref);
   const { links, isHome, formularioHref } = useNavContext();
   const [heroScrolled, setHeroScrolled] = useState(false);
   const headerSolid = !isHome || heroScrolled;

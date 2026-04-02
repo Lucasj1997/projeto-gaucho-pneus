@@ -21,20 +21,25 @@ import {
   highlights,
   products,
   services,
+  whatsappQuickHref,
 } from "@/lib/mock-data";
 import { resolveFaqAnswerText } from "@/lib/faq-resolve";
 import { faqItems } from "@/lib/mock-data/faq";
 import { whatsappWithPrefill } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
-import { Check, CircleGauge, Factory, ShieldCheck, Wrench } from "lucide-react";
+import {
+  Check,
+  CircleGauge,
+  Factory,
+  MessageCircle,
+  ShieldCheck,
+  Wrench,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function HomePage() {
-  const marcianoWa =
-    company.contacts.find((contact) => contact.name === "Marciano")?.whatsappHref ??
-    company.whatsappHref;
-  const waPrincipal = whatsappWithPrefill(marcianoWa);
+  const waPrincipal = whatsappWithPrefill(whatsappQuickHref);
 
   return (
     <>
@@ -276,12 +281,25 @@ export default function HomePage() {
               </li>
               <li>
                 <span className="font-medium">WhatsApp comercial:</span>
-                <div className="mt-2 space-y-1">
+                <div
+                  className="mt-3 space-y-3 rounded-2xl border border-emerald-500/40 bg-gradient-to-br from-emerald-950/55 via-zinc-900/70 to-zinc-950/90 p-4 shadow-[0_8px_30px_-8px_rgba(16,185,129,0.25)] ring-1 ring-emerald-400/15"
+                  role="region"
+                  aria-label="Números de WhatsApp comercial"
+                >
                   {company.contacts.map((contact) => (
-                    <div key={contact.phoneDisplay} className="flex items-center gap-1.5">
-                      <span className="text-zinc-300">{contact.name}:</span>
+                    <div
+                      key={contact.phoneDisplay}
+                      className="flex flex-col gap-2 rounded-xl border border-zinc-600/50 bg-zinc-950/60 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
+                    >
+                      <span className="flex items-center gap-2 text-sm font-semibold text-zinc-200">
+                        <MessageCircle
+                          className="size-5 shrink-0 text-[#25D366]"
+                          aria-hidden
+                        />
+                        {contact.name}
+                      </span>
                       <Link
-                        className="font-semibold text-[#25D366] underline underline-offset-2 hover:text-[#6ee7a8]"
+                        className="text-center text-xl font-bold tracking-tight text-[#25D366] underline decoration-2 underline-offset-[6px] transition-colors hover:text-[#6ee7a8] sm:text-right sm:text-2xl"
                         href={whatsappWithPrefill(contact.whatsappHref)}
                         target="_blank"
                         rel="noopener noreferrer"

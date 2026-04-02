@@ -1,16 +1,13 @@
 import { WhatsappBrandIcon } from "@/components/whatsapp-float";
 import { buttonVariants } from "@/components/ui/button-variants";
-import { company } from "@/lib/mock-data";
+import { company, whatsappQuickHref } from "@/lib/mock-data";
 import { whatsappWithPrefill } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 export function MobileContactBar() {
   const contactNames = company.contacts.map((contact) => contact.name).join(" / ");
-  const marcianoWa =
-    company.contacts.find((contact) => contact.name === "Marciano")?.whatsappHref ??
-    company.whatsappHref;
-  const wa = whatsappWithPrefill(marcianoWa);
+  const wa = whatsappWithPrefill(whatsappQuickHref);
 
   return (
     <div

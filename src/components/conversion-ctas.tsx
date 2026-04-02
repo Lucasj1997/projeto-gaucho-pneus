@@ -1,5 +1,5 @@
 import { buttonVariants } from "@/components/ui/button-variants";
-import { company } from "@/lib/mock-data";
+import { whatsappQuickHref } from "@/lib/mock-data";
 import { whatsappWithPrefill } from "@/lib/whatsapp";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -19,7 +19,7 @@ export function ConversionCtas({
   className,
   budgetHref = "#formulario-contato",
 }: Props) {
-  const wa = whatsappWithPrefill(company.whatsappHref);
+  const wa = whatsappWithPrefill(whatsappQuickHref);
   const isDark = variant === "onDark";
   const btnSize = size === "sm" ? "sm" : "lg";
 

@@ -1,6 +1,6 @@
 import { ConversionCtas } from "@/components/conversion-ctas";
 import { WhatsappBrandIcon } from "@/components/whatsapp-float";
-import { company } from "@/lib/mock-data";
+import { company, whatsappQuickHref } from "@/lib/mock-data";
 import { whatsappWithPrefill } from "@/lib/whatsapp";
 import {
   PATH_AJUDA_MEDIDA_PNEU,
@@ -31,7 +31,7 @@ const socialLinkClass =
 
 export function SiteFooter() {
   const year = new Date().getFullYear();
-  const wa = whatsappWithPrefill(company.whatsappHref);
+  const wa = whatsappWithPrefill(whatsappQuickHref);
   return (
     <footer className="border-t border-zinc-600 bg-brand-logo-bg text-zinc-100">
       <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 sm:px-6 md:flex-row md:items-center md:justify-between">

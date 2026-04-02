@@ -44,7 +44,7 @@ export const company = {
     facebook: "https://www.facebook.com/share/14c3P2LE2Tu/?mibextid=wwXIfr",
     instagram: "https://www.instagram.com/gaucho.pneus?igsh=MXcyb21keDhmb24wNQ==",
   } as const,
-  email: "jordanaborghetti@gmail.com",
+  email: "gauchopneusrs@hotmail.com",
   /** Endereço para exibição */
   address: "RS-463, Vila Lângaro — RS · CEP 99955-000",
   /** Link “Como chegar” no Google Maps (nova aba). */
@@ -58,6 +58,11 @@ export const company = {
     "&output=embed&hl=pt-BR&z=16",
   hours: "Balcão: segunda a sexta, 08h–18h",
 };
+
+/** Número do Marciano para CTAs e atalhos rápidos de WhatsApp (botões, header, flutuante). */
+export const whatsappQuickHref =
+  company.contacts.find((c) => c.name === "Marciano")?.whatsappHref ??
+  company.whatsappHref;
 
 export const services = [
   {
