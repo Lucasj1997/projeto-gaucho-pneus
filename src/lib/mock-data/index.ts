@@ -59,9 +59,9 @@ export const company = {
   hours: "Balcão: segunda a sexta, 08h–18h",
 };
 
-/** Número do Marciano para CTAs e atalhos rápidos de WhatsApp (botões, header, flutuante). */
+/** Número do Edson para CTAs e atalhos rápidos de WhatsApp (botões, header, flutuante). */
 export const whatsappQuickHref =
-  company.contacts.find((c) => c.name === "Marciano")?.whatsappHref ??
+  company.contacts.find((c) => c.name === "Edson")?.whatsappHref ??
   company.whatsappHref;
 
 export const services = [
