@@ -12,9 +12,9 @@ function buildCorsHeaders(req?: Request): Record<string, string> {
   const devFallback = "http://localhost:3000";
 
   // Em produção, evita fallback wildcard para reduzir superfície CORS.
-  const allowOrigin =
-    configuredOrigin ??
-    (isDev ? reqOrigin || devFallback : reqOrigin || "https://www.seudominio.com.br");
+  const allowOrigin = isDev
+    ? configuredOrigin ?? reqOrigin ?? devFallback
+    : configuredOrigin ?? "https://www.seudominio.com.br";
 
   return {
     "Access-Control-Allow-Origin": allowOrigin,
@@ -32,7 +32,7 @@ function isAllowedOrigin(req: Request): boolean {
   // Fail-closed em produção: exige origem configurada e bloqueia origens diferentes.
   if (isProd) {
     if (!configuredOrigin) return false;
-    if (!reqOrigin) return true;
+    if (!reqOrigin) return false;
     return reqOrigin === configuredOrigin;
   }
 
