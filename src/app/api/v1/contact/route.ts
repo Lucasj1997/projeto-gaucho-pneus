@@ -24,10 +24,32 @@ function buildCorsHeaders(req?: Request): Record<string, string> {
   };
 }
 
+function isAllowedOrigin(req: Request): boolean {
+  const reqOrigin = req.headers.get("origin")?.trim();
+  const configuredOrigin = process.env.NEXT_PUBLIC_APP_URL?.trim();
+  const isProd = process.env.NODE_ENV === "production";
+
+  // Fail-closed em produção: exige origem configurada e bloqueia origens diferentes.
+  if (isProd) {
+    if (!configuredOrigin) return false;
+    if (!reqOrigin) return true;
+    return reqOrigin === configuredOrigin;
+  }
+
+  return true;
+}
+
 export async function POST(req: Request) {
+  if (!isAllowedOrigin(req)) {
+    return NextResponse.json(
+      { error: "Origem não permitida", code: "FORBIDDEN_ORIGIN" },
+      { status: 403 },
+    );
+  }
+
   const corsHeaders = buildCorsHeaders(req);
 
-  const limited = rateLimitContact(
+  const limited = await rateLimitContact(
     `contact:${clientKeyFromRequest(req.headers)}`,
   );
   if (!limited.ok) {
@@ -138,9 +160,13 @@ export async function POST(req: Request) {
   );
 }
 
-export function OPTIONS() {
+export function OPTIONS(req: Request) {
+  if (!isAllowedOrigin(req)) {
+    return new NextResponse(null, { status: 403 });
+  }
+
   return new NextResponse(null, {
     status: 204,
-    headers: buildCorsHeaders(),
+    headers: buildCorsHeaders(req),
   });
 }

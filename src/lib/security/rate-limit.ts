@@ -1,13 +1,27 @@
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
+
 type Bucket = { count: number; resetAt: number };
+type RateLimitResult = { ok: true } | { ok: false; retryAfter: number };
 
 const store = new Map<string, Bucket>();
 
 const WINDOW_MS = 60_000;
 const MAX = 10;
+const UPSTASH_URL = process.env.UPSTASH_REDIS_REST_URL?.trim();
+const UPSTASH_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN?.trim();
 
-export function rateLimitContact(
-  key: string,
-): { ok: true } | { ok: false; retryAfter: number } {
+const upstashLimiter =
+  UPSTASH_URL && UPSTASH_TOKEN
+    ? new Ratelimit({
+        redis: new Redis({ url: UPSTASH_URL, token: UPSTASH_TOKEN }),
+        limiter: Ratelimit.slidingWindow(MAX, "60 s"),
+        analytics: true,
+        prefix: "rate-limit:contact",
+      })
+    : null;
+
+function rateLimitLocal(key: string): RateLimitResult {
   const now = Date.now();
   const bucket = store.get(key);
 
@@ -23,6 +37,21 @@ export function rateLimitContact(
 
   bucket.count += 1;
   return { ok: true };
+}
+
+export async function rateLimitContact(key: string): Promise<RateLimitResult> {
+  if (!upstashLimiter) return rateLimitLocal(key);
+
+  try {
+    const result = await upstashLimiter.limit(key);
+    if (result.success) return { ok: true };
+
+    const retryAfter = Math.max(1, Math.ceil((result.reset - Date.now()) / 1000));
+    return { ok: false, retryAfter };
+  } catch {
+    // Fallback defensivo caso Upstash esteja indisponível.
+    return rateLimitLocal(key);
+  }
 }
 
 export function clientKeyFromRequest(headers: Headers): string {
