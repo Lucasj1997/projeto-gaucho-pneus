@@ -45,6 +45,33 @@ src/
 ## Variáveis de Ambiente
 Ver `.env.local` (não versionar). Principal: `NEXT_PUBLIC_APP_URL`.
 
+## Domínio personalizado (produção)
+
+O site usa `NEXT_PUBLIC_APP_URL` como URL canônica (`metadataBase`, Open Graph, JSON-LD). Ela deve ser **exatamente** a URL que o visitante usa no navegador, **com HTTPS** e **sem barra no final** (ex.: `https://www.gauchopneus.com.br` ou `https://gauchopneus.com.br`).
+
+### 1. Onde o site está hospedado (ex.: Vercel)
+
+1. No projeto, abra **Settings → Domains** (ou equivalente).
+2. Adicione o domínio raiz (`seudominio.com.br`) e, se quiser, `www.seudominio.com.br`.
+3. Siga as instruções do painel para o DNS no registrador (normalmente **A/AAAA** para o apex ou **CNAME** para `www` apontando para o host indicado).
+4. Ative redirecionamento de uma variante para a outra (ex.: apex → `www`) se preferir um único endereço oficial.
+
+### 2. Variável de ambiente em produção
+
+No mesmo serviço de hospedagem, em **Environment Variables**, defina:
+
+- `NEXT_PUBLIC_APP_URL` = URL canônica escolhida, por exemplo `https://www.seudominio.com.br`
+
+Depois dispare um novo deploy para a alteração valer (variáveis `NEXT_PUBLIC_*` entram no build do Next.js).
+
+### 3. Desenvolvimento local
+
+Em `.env.local` pode manter `NEXT_PUBLIC_APP_URL=http://localhost:3000`. Não é necessário colocar o domínio de produção no arquivo local para o site funcionar online; o valor de produção fica só no painel da hospedagem.
+
+### 4. E-mail (Resend)
+
+Se usar remetente no próprio domínio (`RESEND_FROM_EMAIL`), conclua a verificação de domínio no Resend e os registros DNS (SPF/DKIM) que eles indicarem — é independente do passo do site, mas usa o mesmo domínio.
+
 ## Comandos
 
 ```bash

@@ -20,6 +20,33 @@ const geistMono = Geist_Mono({
 
 const siteUrl = getSiteUrl();
 
+/** Remove prefixo `content=` e aspas se o usuário colar o trecho errado da instrução do Google. */
+function normalizeGoogleSiteVerificationToken(raw: string): string {
+  let v = raw.trim();
+  if (v.toLowerCase().startsWith("content=")) {
+    v = v.slice("content=".length).trim();
+  }
+  if (
+    (v.startsWith('"') && v.endsWith('"')) ||
+    (v.startsWith("'") && v.endsWith("'"))
+  ) {
+    v = v.slice(1, -1).trim();
+  }
+  return v;
+}
+
+/** Token do Search Console — aceita os dois nomes usados na Vercel. */
+function getGoogleSiteVerification(): string | undefined {
+  const a = process.env.GOOGLE_SITE_VERIFICATION?.trim();
+  const b = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION?.trim();
+  const raw = a || b;
+  if (!raw) return undefined;
+  const normalized = normalizeGoogleSiteVerificationToken(raw);
+  return normalized || undefined;
+}
+
+const googleSiteVerification = getGoogleSiteVerification();
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
@@ -67,6 +94,10 @@ export const metadata: Metadata = {
     description: seo.description,
   },
   category: "business",
+  /** Google Search Console — no App Router, use `metadata.verification` (head manual no layout pode não ir ao HTML). */
+  ...(googleSiteVerification
+    ? { verification: { google: googleSiteVerification } }
+    : {}),
   other: {
     googlebot: "index, follow",
     bingbot: "index, follow",
